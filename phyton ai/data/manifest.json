@@ -1,0 +1,10 @@
+{
+  "format_version": 1,
+  "method": "50 scenarios x 20 distinct question facets, plus direct FAQs",
+  "review_status": "Authored prototype guidance; not certified or reviewed by PAO",
+  "counts": {
+    "en": 1023,
+    "tl": 1023,
+    "taglish": 1023
+  }
+}

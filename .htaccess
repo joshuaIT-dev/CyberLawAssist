@@ -1,0 +1,24 @@
+Options -Indexes -MultiViews
+RewriteEngine On
+RewriteBase /CyberLawAssist/
+# Only old public URL spellings are permanent; session redirects remain temporary.
+RewriteRule ^(?:home(?:\.html|\.php)?|index\.php)$ index.html [R=301,L,NE,NC]
+RewriteRule ^(?:login|signin)(?:\.html|\.php)?$ pages/login.html [R=301,L,NE,NC]
+RewriteRule ^(?:signup|register|registration)(?:\.html|\.php)?$ pages/signup.html [R=301,L,NE,NC]
+RewriteRule ^admin-login(?:\.html|\.php)?$ pages/admin-login.html [R=301,L,NE,NC]
+RewriteRule ^(guest|user|admin)(?:\.html|\.php)?$ pages/$1.html [R=301,L,NE,NC]
+RewriteRule ^(?:terms|terms-of-service|terms-and-conditions)(?:\.html|\.php)?$ pages/terms.html [R=301,L,NE,NC]
+RewriteRule ^(?:privacy|privacy-policy|privacy-notice)(?:\.html|\.php)?$ pages/privacy.html [R=301,L,NE,NC]
+RewriteRule ^pages/(?:register|registration|setup)(?:\.html|\.php)?$ pages/signup.html [R=301,L,NE,NC]
+RewriteRule ^pages/(?:terms-of-service|terms-and-conditions)(?:\.html|\.php)?$ pages/terms.html [R=301,L,NE,NC]
+RewriteRule ^pages/(?:privacy-policy|privacy-notice)(?:\.html|\.php)?$ pages/privacy.html [R=301,L,NE,NC]
+RewriteRule ^pages/((?:guest|user|admin)(?:-[a-z0-9-]+)?|login|signup|terms|privacy)(?:\.php)?$ pages/$1.html [R=301,L,NE,NC]
+ErrorDocument 404 /CyberLawAssist/extra/404.html
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "same-origin"
+  <FilesMatch "\.(?:html|css|js)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>

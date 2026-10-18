@@ -1,0 +1,629 @@
+{
+  "title": "CyberLawAssist: System Overview, Plan Comparison, and ISO/IEC 25010:2011 Readiness Assessment",
+  "date": "18 October 2026",
+  "blocks": [
+    {
+      "type": "heading",
+      "text": "1. Executive summary"
+    },
+    {
+      "type": "paragraph",
+      "text": "CyberLawAssist is a local web-based legal information and office-support system for the Muntinlupa City District Office - Public Attorney's Office. It combines a public introduction, role-specific workspaces, an offline retrieval chatbot, legal information, personal preparation tools, and staff-managed support and intake records."
+    },
+    {
+      "type": "paragraph",
+      "text": "The current implementation goes beyond the earliest browser-only analyzer concept. Later owner instructions introduced server-backed User/Admin accounts, Live support, physical intake, database reports, formatted Word exports, and supporting interface utilities. Guest history remains browser-local; signed-in activity is associated with the authenticated database account."
+    },
+    {
+      "type": "paragraph",
+      "text": "Assessment conclusion: the source shows substantial implementation relevant to ISO/IEC 25010:2011, particularly the intended workflows, role/ownership controls, and user error protection. Overall measured quality has not been established. A numerical ISO score, a blanket pass, or a certification claim would not be supported by the available evidence."
+    },
+    {
+      "type": "paragraph",
+      "text": "Confirmed feedback: the project owner reports that Live support works and previously accepted the frontend design. The owner also assigns chatbot accuracy and legal-content review to the group and considers those activities complete. This report does not repeat that review or invent numerical results for it."
+    },
+    {
+      "type": "heading",
+      "text": "2. Review basis and evidence labels"
+    },
+    {
+      "type": "paragraph",
+      "text": "Snapshot: 18 October 2026. This report uses the current project source, local planning documents, implementation notes, and the owner's statements in the project conversation. It is an implementation overview and a source-based readiness assessment, not an independent penetration test, usability study, performance benchmark, or formal ISO evaluation."
+    },
+    {
+      "type": "table",
+      "headers": [
+        "Evidence label",
+        "Meaning"
+      ],
+      "rows": [
+        [
+          "Implemented in source",
+          "A page, handler, data structure, or control exists in the current code. This is not proof that every runtime scenario has passed."
+        ],
+        [
+          "Owner confirmed",
+          "The owner expressly reported a result, including working Live support and accepted frontend design. The test conditions and numerical measures were not independently recorded here."
+        ],
+        [
+          "Group-owned review",
+          "NLP accuracy and content review are handled by the group. Existing approved results can be attached as evidence without repeating that work."
+        ],
+        [
+          "Not established",
+          "No relevant measurement, evaluation record, or complete runtime demonstration was available for the claim."
+        ],
+        [
+          "Changed / gap",
+          "A plan was superseded by later instructions, or a planned function is not exposed by the current interface/API."
+        ]
+      ],
+      "widths": [
+        2300,
+        7000
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The 2011 standard is used because that is the version requested and referenced in the planning materials. Its product model has eight quality areas; quality in use is considered separately. ISO currently marks this edition withdrawn and lists newer related editions. This report does not substitute the 2023 model for the requested 2011 assessment. [ISO-1, ISO-2]"
+    },
+    {
+      "type": "heading",
+      "text": "3. Purpose, users, and boundaries"
+    },
+    {
+      "type": "paragraph",
+      "text": "The system helps people describe cyber-related concerns in ordinary language, browse information under RA 10175, organize preparation steps, and contact office staff. It supports public information and office coordination; it does not decide guilt, legal liability, eligibility for representation, or a case outcome."
+    },
+    {
+      "type": "paragraph",
+      "text": "A chatbot reply, a decision-guide result, a saved checklist, or a Word export does not itself file a complaint, schedule an appointment, or establish an attorney-client relationship. The office must confirm official actions and assistance."
+    },
+    {
+      "type": "table",
+      "headers": [
+        "Area",
+        "Current scope"
+      ],
+      "rows": [
+        [
+          "Office",
+          "Muntinlupa City District Office - Public Attorney's Office. Ground Floor, Municipal City Hall of Justice Building, Right Wing, National Road, Tunasan, Muntinlupa, 1773 Metro Manila. Phone: (02) 8862 2525."
+        ],
+        [
+          "Interface languages",
+          "English and Tagalog are supported by the workspace translation layer. Public legal-policy and error-page copy is currently English; a complete multilingual coverage assessment was not performed."
+        ],
+        [
+          "Chatbot languages",
+          "English, Tagalog, and Taglish; explicit selection and heuristic automatic detection."
+        ],
+        [
+          "Device scope",
+          "Responsive desktop/sidebar and mobile/bottom-navigation layouts. CSS implementation does not establish usability or compatibility on every actual device."
+        ],
+        [
+          "Operating context",
+          "XAMPP Apache/PHP and MariaDB on the host computer, plus the local Python service. Phones on the same network access the web host; they do not need direct access to the Python port."
+        ]
+      ],
+      "widths": [
+        2300,
+        7000
+      ]
+    },
+    {
+      "type": "page"
+    },
+    {
+      "type": "heading",
+      "text": "4. Features by role"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "Role",
+        "Available features",
+        "Access and storage"
+      ],
+      "rows": [
+        [
+          "Guest",
+          "Chatbot, suggested prompts, conversation rename/pin/delete, decision guide, RA 10175 guide, public notifications, and office information.",
+          "No account required. Conversation history and Guest read/preferences data use the current browser profile. No Live support, signed-in checklist, or administrator tools."
+        ],
+        [
+          "User",
+          "Guest information features plus personal SQL-backed chat history, saved checklist, checklist-only printing, Word checklist export, alerts, notifications/read markers, personal profile/settings/language, password change, and Live support.",
+          "Public signup creates Users only. Private account data is requested under the authenticated user ID and is not shared with other Users."
+        ],
+        [
+          "Admin",
+          "Dashboard, physical intake, searchable/paginated case records, record details/editing/status, User directory and account management, admin creation, Live support inbox/replies, and weekly/monthly/yearly reports with Word export. Admin also has an own-account chatbot/checklist/history.",
+          "Admin accounts are created by signed-in administrators and have unique admin numbers. Office records and support conversations are available to staff; the application does not provide a screen for browsing another account's private AI history."
+        ]
+      ],
+      "widths": [
+        1200,
+        4500,
+        3600
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "5. Main workflows"
+    },
+    {
+      "type": "paragraph",
+      "text": "Public entry: Home introduces the office, explains how the system helps, links the law guide without forcing login, and offers Guest access or registration/login. Office information is presented before account workflows."
+    },
+    {
+      "type": "paragraph",
+      "text": "Chatbot: the user enters a message or chooses a suggested topic, selects a reply language, and receives a locally retrieved answer, sources, suggestions, or a clarification/error state. History supports rename, pin, and confirmed deletion. Enter sends; Shift+Enter inserts a new line. The current keyboard handler also avoids submitting while text composition is active or a send is already busy/disabled."
+    },
+    {
+      "type": "paragraph",
+      "text": "Decision guide: a separate guided flow gathers selections and organizes next steps. It is distinct from the chatbot and is not a formal legal decision engine."
+    },
+    {
+      "type": "paragraph",
+      "text": "Live support: a signed-in User sends an office message. An Admin selects that User conversation from the inbox and replies. Guests do not appear in the inbox. Messages and related notifications are stored in SQL. Visible support pages poll approximately every five seconds; actual end-to-end latency also depends on the server and connection."
+    },
+    {
+      "type": "paragraph",
+      "text": "Checklist: items and completion states are saved to the signed-in account. Word export includes office identification, generation date, progress totals, and an item/status table. Printing targets the checklist rather than the whole portal."
+    },
+    {
+      "type": "paragraph",
+      "text": "Office intake: staff record a walk-in visit, concern category, date, contact details when supplied, assigned staff, status, and brief factual notes. Records are saved in case_records and viewed through Case records. A walk-in does not need a User account. The creator reference identifies the staff account, not an automatic link to an online User."
+    },
+    {
+      "type": "paragraph",
+      "text": "Reports: weekly output covers Monday to Sunday; monthly output follows the actual calendar month, including leap-year February; annual output has twelve monthly buckets. Figures use saved visit dates and exclude records without a visit date. Weekly/monthly/yearly Word exports use the selected report period and the same summary/bucket calculation as the screen."
+    },
+    {
+      "type": "paragraph",
+      "text": "Account administration: Manage account supports User status changes and password changes. Permanent User deletion requires the administrator password and the literal DELETE confirmation, removes linked personal activity in a transaction, and is blocked for an account retained as an office record creator. New Admin creation keeps the creating administrator signed in. Admin numbers are identifiers, not an additional authentication factor."
+    },
+    {
+      "type": "heading",
+      "text": "6. Architecture and persistence"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "Layer / component",
+        "Responsibility"
+      ],
+      "rows": [
+        [
+          "pages/ and index.html",
+          "Public HTML and thin role/tab wrappers. PHP checks protected page access before serving their HTML."
+        ],
+        [
+          "assets/js/portal.js",
+          "Shared role navigation, rendering, form handling, state coordination, polling, and calls to the same-origin API. Navigation changes tabs without reloading the entire shell."
+        ],
+        [
+          "assets/php/auth.php and bootstrap.php",
+          "Sessions, login/admin-number login, public User registration, password hashing, CSRF, input validation, current-user/role checks, and shared account creation."
+        ],
+        [
+          "assets/php/api.php and data.php",
+          "Authenticated feature actions, ownership checks, SQL-backed data, support inbox, account administration, intake, and report queries."
+        ],
+        [
+          "assets/php/docx.php",
+          "Locally generated OOXML Word packages, letterhead, tables, document metadata, and page footer. Temporary package files are outside the web root and removed after generation."
+        ],
+        [
+          "phyton ai/",
+          "Local retrieval engine and English/Tagalog/Taglish datasets. A FastAPI adapter exists; the launcher uses the built-in HTTP server when FastAPI/Uvicorn are unavailable."
+        ],
+        [
+          "database/",
+          "Installation schema, additive migrations, seed content, and the database plan. Installation and migration scripts are CLI-only."
+        ],
+        [
+          "extra/ and root sw.js",
+          "Skeleton loaders, public-file browser caching, offline notice, policy/error presentation, and supporting documentation. Root .htaccess holds permanent aliases and the 404 handler."
+        ]
+      ],
+      "widths": [
+        3000,
+        6300
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Request flow: Browser -> Apache/PHP -> MariaDB for account and office records. Chatbot flow: Browser -> PHP -> local Python retrieval service -> PHP -> Browser. Guest history is saved in browser storage after the response; signed-in history is saved under the actual account ID in SQL."
+    },
+    {
+      "type": "paragraph",
+      "text": "The schema has twelve application tables: users; chat_conversations; chat_messages; support_threads; support_messages; checklist_items; case_records; notifications; notification_reads; law_topics; law_translations; office_contacts. There are not separate duplicated Guest/User/Admin copies of every table."
+    },
+    {
+      "type": "paragraph",
+      "text": "The local corpus contains 1,023 Q&A records per language, 3,069 total. Its construction is 50 scenarios by 20 facets plus 23 FAQs per language. It uses normalized text, TF-IDF-style indexed word/bigram retrieval, character matching, and limited follow-up context. It is retrieval software, not a generative LLM. Dataset quantity and similarity scores do not establish legal correctness or measured classification accuracy."
+    },
+    {
+      "type": "page"
+    },
+    {
+      "type": "heading",
+      "text": "7. What changed from the earlier plans"
+    },
+    {
+      "type": "paragraph",
+      "text": "The original System Plan, the UI/UX plan, the TXT note, and the later UI Design System represent different planning stages. The UI/UX plan itself has conflicting assumptions: it lists Guest/User/Admin in one place but also specifies no login and excludes accounts later; it mentions three languages while listing Tagalog/Taglish input out of scope. Current behavior follows the owner's later explicit implementation requests rather than silently treating every draft statement as simultaneously binding."
+    },
+    {
+      "type": "table",
+      "headers": [
+        "Earlier plan / requirement",
+        "Current implementation",
+        "Classification"
+      ],
+      "rows": [
+        [
+          "Keep the old Figma appearance.",
+          "A new city-green/action-blue interface was requested and implemented. Old screenshots were excluded as the implementation design authority.",
+          "Owner-directed design replacement."
+        ],
+        [
+          "Browser-only history; no account details or server submission.",
+          "Guest history stays on-device. Signed-in accounts, conversations, checklists, support, and office records use the local server/database, with updated policy notices.",
+          "Material owner-directed data-flow change."
+        ],
+        [
+          "Analyzer and separate legal-match result with confidence, keywords, and multiple matches.",
+          "The current interaction is chatbot retrieval plus a separate guided decision flow and law guide. A dedicated old-style ranked legal-classification result screen is not the delivered interaction.",
+          "Adapted workflow; do not describe it as identical to the original analyzer."
+        ],
+        [
+          "Roles, alerts, checklist, printing/export and Live support proposed in the TXT note.",
+          "Role workspaces, personal checklist, history, notifications, office messaging, and exports have been implemented.",
+          "Later requested scope implemented."
+        ],
+        [
+          "The design plan used a raised central mobile circle.",
+          "The owner later requested normal bottom buttons. User/Admin keep Live support as the central destination; Guest uses Chatbot.",
+          "Superseded navigation treatment."
+        ],
+        [
+          "Generic export/print proposal and later CSV output.",
+          "Formatted Word (.docx) checklist and report exports, plus checklist-only printing.",
+          "Expanded and revised output format."
+        ],
+        [
+          "Admin walk-in visits and activity reporting.",
+          "SQL-backed intake and case records, editable status, actual calendar report buckets and export.",
+          "Implemented office workflow."
+        ],
+        [
+          "Admin Knowledge Base maintenance.",
+          "Legal and office content is read from seeded SQL tables; no complete staff content-editing screen/API is exposed.",
+          "Planned authoring capability not implemented in the current UI."
+        ],
+        [
+          "Admin notice creation/management.",
+          "Notices and read markers are displayed; support activity generates notifications. A general notice publishing/editor screen is not implemented.",
+          "Partial implementation of the broader design intent."
+        ],
+        [
+          "Language support across three language labels.",
+          "Chatbot has three languages; workspace UI has English/Tagalog translation. Policy and error copy is English.",
+          "Scope distinction; full three-language interface coverage is not demonstrated."
+        ],
+        [
+          "Alpha/Beta and ISO evaluation mentioned in the note/capstone.",
+          "Owner feedback and source controls exist, but no completed formal questionnaire, benchmark set, security report, or measured ISO score is attached.",
+          "Evaluation evidence still needed."
+        ]
+      ],
+      "widths": [
+        2700,
+        4500,
+        2100
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "The legacy Chapter-1-to-3 .doc was inspected through readable text excerpts. Those excerpts confirm planned Alpha/Beta procedures and evaluation by IT experts and actual users against ISO/IEC 25010:2011. It is a legacy compound document with embedded drawing packages; a full structured thesis transcription was not produced. This report therefore does not claim that it reproduces the complete approved research instrument or respondent methodology."
+    },
+    {
+      "type": "heading",
+      "text": "8. Later additions now present"
+    },
+    {
+      "type": "paragraph",
+      "text": "Account improvements include User-only public registration, a dedicated Admin login, unique admin numbers, admin-managed Admin creation, role-locked pages, profile/settings/language menus, and logout. User management includes password changes, disabling/enabling, and confirmed deletion."
+    },
+    {
+      "type": "paragraph",
+      "text": "Interaction improvements include persisted history, rename/pin/delete controls, in-app delete confirmation, suggestions inside the chatbot, a separate decision guide, keyboard send/newline behavior, responsive bottom navigation, and a selectable Admin support inbox. Live support has been reported working by the owner."
+    },
+    {
+      "type": "paragraph",
+      "text": "Office/data improvements include MariaDB persistence, intake references, case editing/revision checks, searching and pagination, calendar-based reports, Word formatting, and checklist-only printing. Security-related additions include CSRF checks, session regeneration, login throttling, ownership checks, session invalidation, and account identity binding in API calls."
+    },
+    {
+      "type": "paragraph",
+      "text": "Supporting additions include workspace/report skeleton loaders, a public-file cache with a cache-clear control, an offline notice, revised Terms/Privacy pages, server-validated registration acknowledgement with version/time, a custom graphic 404, and permanent redirects for obsolete public URL names. Private API responses and protected workspace HTML are excluded from the service-worker cache."
+    },
+    {
+      "type": "page"
+    },
+    {
+      "type": "heading",
+      "text": "9. ISO/IEC 25010:2011 product-quality assessment"
+    },
+    {
+      "type": "paragraph",
+      "text": "The following are desk-review judgments about the present implementation. They are not measured pass/fail results. ISO provides the evaluation model; the project must define its own relevant targets, collect evidence, and document the evaluation context. [ISO-1, ISO-2]"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "Quality area",
+        "Implemented evidence / present assessment",
+        "Evidence still required"
+      ],
+      "rows": [
+        [
+          "Functional suitability",
+          "Substantial role workflows exist: legal information, chatbot, guide, history, checklist, support, intake, account controls and reports. Owner confirms Live support. Some original workflows were adapted; content/notice authoring is not complete.",
+          "Map the final accepted scope to demonstrated scenarios. Attach the group's existing NLP/content results. Record expected/actual results for current account, export, case, and report actions."
+        ],
+        [
+          "Performance efficiency",
+          "Retrieval indexes are prepared in memory; cases are paginated; public assets can be reused. Support polling has a five-second interval. These design choices do not prove response-time or resource targets.",
+          "Measure median and high-percentile latency, CPU, RAM, and behavior at an agreed concurrent-user count. Long histories, full support payloads, and the User directory need capacity checks."
+        ],
+        [
+          "Compatibility",
+          "Browser-to-PHP-to-SQL/Python interfaces and Word output are implemented. Owner reports a working User/Admin support exchange.",
+          "Record browser/OS/device coverage and open Word exports in the intended office software. Document the active Python server adapter and integration versions."
+        ],
+        [
+          "Usability",
+          "Owner has accepted the design. Role navigation, plain-language labels, mobile layout, keyboard sending, confirmation dialogs, skeletons, and reduced-motion options are present.",
+          "Observe actual target users completing tasks. Measure task success/time and navigation errors. Review keyboard focus, screen-reader use, contrast, tap sizes, and the coverage of translations."
+        ],
+        [
+          "Reliability",
+          "Transactions, request keys, duplicate-prevention logic, retry states, revision checks, and local backups support recovery. No high-availability service or demonstrated restore result is established.",
+          "Record server/AI outage handling, interrupted saves, duplicate retries, concurrent edits, and restoration from an isolated backup. Define recovery-time/data-loss expectations before measuring."
+        ],
+        [
+          "Security",
+          "Password hashes, session cookies, CSRF, prepared queries, role/ownership checks, login limits and administrator reauthentication for sensitive User actions are visible in source. Public cache excludes private endpoints.",
+          "Perform role/ownership and session abuse checks. Verify deployment transport and host/database access. A tamper-evident action audit, cryptographic signatures, and measured resistance to attack are not established; admin number alone is not MFA."
+        ],
+        [
+          "Maintainability",
+          "PHP auth/data/document helpers, Python engine/corpus modules, and schema/migrations are separated. Documentation exists. portal.js concentrates many workflows, and older regression assertions still mention CSV.",
+          "Bring tests/documentation into line with Word exports and current API contracts. Establish a repeatable regression procedure and change traceability. Profile/refactor only where measurements or change risk justify it."
+        ],
+        [
+          "Portability",
+          "The app has local startup/setup instructions and a Python fallback adapter. Standard browser, PHP, SQL and Word interfaces support deployment options.",
+          "Demonstrate a clean installation on another host. Document first-admin provisioning and dependency versions. Renaming the project requires changes to RewriteBase/ErrorDocument and absolute 404/offline paths; LAN HTTP does not activate the service worker."
+        ]
+      ],
+      "widths": [
+        1750,
+        3900,
+        3650
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Direct answer: the implementation shows good alignment in several quality areas, but it cannot honestly be rated as an overall ISO/IEC 25010:2011 pass from source inspection and one confirmed workflow. Performance, reliability, security assurance, accessibility, compatibility, and quality-in-use claims require recorded evaluation results."
+    },
+    {
+      "type": "heading",
+      "text": "10. Quality in use: separate outcome assessment"
+    },
+    {
+      "type": "paragraph",
+      "text": "The 2011 quality-in-use model considers effectiveness, efficiency, satisfaction, freedom from risk, and context coverage. These concern outcomes for real users in a stated environment, so a source-code checklist alone is insufficient. [ISO-2]"
+    },
+    {
+      "type": "table",
+      "headers": [
+        "Outcome area",
+        "What can be stated now",
+        "Suggested evidence"
+      ],
+      "rows": [
+        [
+          "Effectiveness",
+          "The owner reports successful Live support. Other workflow completion rates are not recorded here.",
+          "Task completion, correct output, and error counts for representative users and agreed scenarios."
+        ],
+        [
+          "Efficiency",
+          "No measured task duration or effort comparison is attached.",
+          "Time and number of actions needed to find a law, prepare a checklist, contact staff, and complete intake."
+        ],
+        [
+          "Satisfaction",
+          "Design acceptance and positive Live support feedback are qualitative evidence, not a population satisfaction score.",
+          "Approved user questionnaire, respondent context, and documented comments without invented scores."
+        ],
+        [
+          "Freedom from risk",
+          "Informational disclaimers, limited sharing, account controls, confirmation, and support escalation can reduce some risks. Actual harm reduction is not measured.",
+          "Review misleading guidance, accidental deletion/disclosure, shared-device use, and interpretation of exports with office stakeholders."
+        ],
+        [
+          "Context coverage",
+          "Desktop/mobile CSS and localhost/LAN operation are intended contexts. Offline AI still needs the reachable local host; LAN HTTP lacks service-worker caching.",
+          "Observe the agreed device, network, role, language, and accessibility contexts and record unsupported conditions."
+        ]
+      ],
+      "widths": [
+        1750,
+        3900,
+        3650
+      ]
+    },
+    {
+      "type": "page"
+    },
+    {
+      "type": "heading",
+      "text": "11. Evaluation and acceptance evidence to collect"
+    },
+    {
+      "type": "paragraph",
+      "text": "This is a proposed evidence plan, not a claim that these checks were executed. Thresholds and scoring weights should come from the approved project instrument or be agreed with stakeholders; the numerical targets below are intentionally not invented as ISO requirements."
+    },
+    {
+      "type": "table",
+      "headers": [
+        "Evidence area",
+        "Suggested record / scenario"
+      ],
+      "rows": [
+        [
+          "Functional acceptance",
+          "For each final requirement: scenario ID, role, preconditions, expected output, observed output, date/device, and result. Include signup consent, admin number uniqueness, role URL protection, history controls, checklist print/export, intake revisions, report periods, and account management."
+        ],
+        [
+          "Existing group work",
+          "Attach the group's approved content/NLP review and any existing language-specific accuracy results. Do not equate 3,069 records or a retrieval similarity score with correctness."
+        ],
+        [
+          "Live support",
+          "Keep the owner's confirmation and add a reproducible normal-window User / private-window Admin conversation record, including inbox selection and reply. Do not assume two normal tabs represent different accounts."
+        ],
+        [
+          "Performance/capacity",
+          "Record the host specification, active Python adapter, dataset size, browser count, workload, measured response times, CPU/RAM, and failures. Compare results to project-approved targets."
+        ],
+        [
+          "Recovery",
+          "Restore a backup into an isolated database and record the result; do not overwrite the working project to demonstrate recovery. Record service-outage, interrupted-send, retry, and concurrent-edit behavior."
+        ],
+        [
+          "Security/access",
+          "Record negative role/ownership cases with separate accounts, invalid CSRF, stale sessions, and account disable/delete behavior. Confirm HTTPS and network access choices for any deployment beyond localhost."
+        ],
+        [
+          "User evaluation",
+          "Use the capstone-approved instrument with IT evaluators and representative users. Keep the sample/context and analysis method explicit. A small informal usability walkthrough is not automatically a statistically representative ISO score."
+        ],
+        [
+          "Document/browser behavior",
+          "Open actual checklist/report Word downloads in the intended office Word processor. Inspect mobile overflow, keyboard sending, 404 recovery and actual HTTP statuses for missing/redirected URLs."
+        ],
+        [
+          "Policy adoption",
+          "Confirm the new Terms/Privacy wording, retention/backup rules, office branding/contact authority, and record handling before public adoption. This is separate from repeating the group's already-owned NLP/content review."
+        ]
+      ],
+      "widths": [
+        2400,
+        6900
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "12. Known limits and exclusions"
+    },
+    {
+      "type": "paragraph",
+      "text": "The chatbot does not generate unrestricted answers, update laws automatically, decide cases, file complaints, or learn itself from conversations. Automatic language selection is heuristic. No external cloud AI, email/SMS delivery integration, or emergency-response guarantee is configured."
+    },
+    {
+      "type": "paragraph",
+      "text": "The admin area currently displays seeded legal/office content and notices; it does not provide the complete proposed Knowledge Base and general notification publishing editor. Physical intake is a saved-record workflow, not a fully demonstrated real-time queue system with the earlier Waiting/In service statuses."
+    },
+    {
+      "type": "paragraph",
+      "text": "There is no automatic record-retention schedule in the current implementation. Account deletion does not remove prior backups or downloaded/printed documents. A full staff action audit and formal security validation are not provided by the current evidence."
+    },
+    {
+      "type": "paragraph",
+      "text": "Responsive code, a public cache, and a launcher do not prove cross-device portability, uptime, restore success, accessibility compliance, or an office production deployment. This report contains no fabricated Alpha/Beta results, numeric ISO rating, participant count, or test pass rate."
+    },
+    {
+      "type": "heading",
+      "text": "13. Practical handover and operation"
+    },
+    {
+      "type": "paragraph",
+      "text": "Start the local project through start-project.bat. Keep Apache, MariaDB, and the Python service running for their corresponding features. Use the dedicated Admin login with an assigned admin number; public signup is User-only. Existing administrator numbers are visible in Profile and the Administrators list."
+    },
+    {
+      "type": "paragraph",
+      "text": "For same-computer Live support, use a normal browser User session and an incognito/different-browser Admin session on the same localhost project. For a phone on the same network, use the host computer's LAN address. Do not expose the Python or database port solely to make the web UI work; PHP forwards local requests."
+    },
+    {
+      "type": "paragraph",
+      "text": "Keep the private configuration and backups outside htdocs. Back up before schema migrations. Store downloaded case-related documents securely. On a fresh installation, establish or restore an authorized initial Admin account before using admin-managed account creation."
+    },
+    {
+      "type": "paragraph",
+      "text": "When editing policies, update the document dates, signup policy_version field, and CLA_POLICY_VERSION together. When the project URL changes, update the documented redirect/error paths. Asset cache versions are project-specific; cache contents do not substitute for server/database backups."
+    },
+    {
+      "type": "heading",
+      "text": "14. Source and evidence register"
+    },
+    {
+      "type": "paragraph",
+      "text": "[PLAN-1] System Plan for Attorney.docx and its matching Markdown working plan, dated 17 October 2026; original project planning folder."
+    },
+    {
+      "type": "paragraph",
+      "text": "[PLAN-2] Attorney_Law_App_UIUX_Plan.docx; original responsive UI/UX baseline, including its conflicting account/language assumptions."
+    },
+    {
+      "type": "paragraph",
+      "text": "[PLAN-3] polishing current UI design.txt; proposed role features, stack, languages, responsiveness, Alpha/Beta, and ISO evaluation."
+    },
+    {
+      "type": "paragraph",
+      "text": "[PLAN-4] CyberLawAssist-UI-Design-System.docx; later office/role design intent, including mobile and staff workflows. Historical visual intent was compared; old Figma images were not used as the current UI authority."
+    },
+    {
+      "type": "paragraph",
+      "text": "[PLAN-5] Chapter-1-TO-3-FINAL-DOCS-1.doc; readable legacy-document excerpts inspected for objectives, scope and Alpha/Beta/ISO evaluation intent. Full instrument/complete structured extraction not supplied in this report."
+    },
+    {
+      "type": "paragraph",
+      "text": "[CODE-1] Current index.html, pages/, assets/js/portal.js, site.js, api.js, portal-language.js, and responsiveness styles."
+    },
+    {
+      "type": "paragraph",
+      "text": "[CODE-2] assets/php/auth.php, bootstrap.php, page.php, api.php, data.php and docx.php; database/schema.sql, migrate.php, setup.php, and DATABASE_PLAN.md."
+    },
+    {
+      "type": "paragraph",
+      "text": "[CODE-3] phyton ai/engine.py, start-ai.ps1, README.md, and data/manifest.json; three language Q&A files. Corpus counts are structural inventory, not a reported accuracy score."
+    },
+    {
+      "type": "paragraph",
+      "text": "[CODE-4] extra/, sw.js, root/pages .htaccess, current Terms/Privacy pages, project README, and existing regression-script references. Existing tests were inspected as source where relevant; they were not executed for this report."
+    },
+    {
+      "type": "paragraph",
+      "text": "[FEEDBACK-1] Owner conversation: accepted frontend design; group owns/considers NLP accuracy and content review complete; Live support expressly reported working on 18 October 2026."
+    },
+    {
+      "type": "paragraph",
+      "text": "[ISO-1] ISO official catalogue, ISO/IEC 25010:2011, accessed 18 October 2026: https://www.iso.org/standard/35733.html"
+    },
+    {
+      "type": "paragraph",
+      "text": "[ISO-2] ISO Online Browsing Platform, first edition model structure and quality areas, accessed 18 October 2026: https://www.iso.org/obp/ui/?_escaped_fragment_=iso%3Astd%3Aiso-iec%3A25010%3Aed-1%3Av1%3Aen"
+    },
+    {
+      "type": "paragraph",
+      "text": "Final position: implemented project with an explicit feature inventory and documented changes, supported by limited confirmed workflow feedback. ISO/IEC 25010:2011 readiness is discussed with traceable evidence; demonstrated overall quality remains subject to the approved evaluation records."
+    }
+  ]
+}

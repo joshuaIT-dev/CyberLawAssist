@@ -1,0 +1,4 @@
+Options -MultiViews
+RewriteEngine On
+# Keep the existing HTML URLs while PHP checks the session before serving them.
+RewriteRule ^(?:(?:guest|user|admin)(?:-[a-z0-9-]+)?|login|signup|setup)\.html$ ../assets/php/page.php [END,NC]
