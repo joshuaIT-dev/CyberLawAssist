@@ -1,258 +1,47 @@
-
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#27734f">
   <title>CyberLawAssist | Muntinlupa City PAO</title>
-
-  <link rel="stylesheet" href="site.css">
-  <link rel="stylesheet" href="mobile.css">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="stylesheet" href="responsiveness/mobile.css">
 </head>
-
-<body data-home="true" data-auth-url="auth.php">
-
-<header class="site-header">
-  <div class="header-inner">
-    <a class="brand" href="index.html">
-      <span class="brand-mark">
-        <i data-lucide="scale"></i>
-      </span>
-      <span>
-        <b>CyberLawAssist</b>
-        <small>Muntinlupa City District Office</small>
-      </span>
-    </a>
-
-    <button class="menu-toggle icon-button" aria-label="Open menu" aria-expanded="false">
-      <i data-lucide="menu"></i>
-    </button>
-
-    <nav class="main-nav">
-      <a class="active" href="#home">Home</a>
-      <a href="#services">How it helps</a>
-      <a href="#laws">Cyber law</a>
-      <a href="guest.html">Guest workspace</a>
-      <a href="#office">About the office</a>
-      <a class="nav-login" href="login.html">Log in</a>
-      <a class="button button-blue nav-signup" href="signup.html">Create account</a>
-    </nav>
-  </div>
-</header>
-
+<body data-home="true" data-auth-url="assets/php/auth.php">
+<header class="site-header"><div class="header-inner">
+  <a class="brand" href="index.html"><span class="brand-mark"><i data-lucide="scale"></i></span><span><b>CyberLawAssist</b><small>Muntinlupa City District Office</small></span></a>
+  <button class="menu-toggle icon-button" aria-label="Open menu" aria-expanded="false"><i data-lucide="menu"></i></button>
+  <nav class="main-nav"><a class="active" href="#home">Home</a><a href="#services">How it helps</a><a href="#laws">Cyber law</a><a href="pages/guest.html">Guest workspace</a><a href="#office">About the office</a><a class="nav-login" href="pages/login.html">Log in</a><a class="button button-blue nav-signup" href="pages/signup.html">Create account</a></nav>
+</div></header>
 <main>
-
-  <section class="hero section-wrap" id="home">
-    <div class="hero-copy">
-
-      <span class="eyebrow">
-        <i data-lucide="map-pin"></i>
-        Public legal information for Muntinlupa
-      </span>
-
-      <h1>Clearer next steps for <em>cyber law concerns.</em></h1>
-
-      <p class="lead">
-        Get guided information about cybercrime concerns, understand relevant laws,
-        and prepare questions before speaking with the Public Attorney’s Office.
-      </p>
-
-      <div class="hero-actions">
-        <a class="button button-blue" href="guest-chatbot.html">
-          Try the guest workspace
-          <i data-lucide="arrow-right"></i>
-        </a>
-
-        <a class="button button-light" href="login.html">
-          Log in
-        </a>
-      </div>
-
-      <div class="trust-line">
-        <i data-lucide="shield-check"></i>
-        <span>Private, guided access to public legal information</span>
-      </div>
-
-    </div>
-
-    <aside class="office-card" id="office">
-
-      <div class="office-card-top">
-        <span class="office-icon">
-          <i data-lucide="building-2"></i>
-        </span>
-
-        <span class="status-pill">
-          <span></span>
-          Muntinlupa City
-        </span>
-      </div>
-
-      <p class="card-kicker">YOUR LOCAL PUBLIC ATTORNEY’S OFFICE</p>
-
-      <h2>Here to help you understand your options.</h2>
-
-      <p>
-        Connect with the Muntinlupa City District Office for legal
-        assistance and guidance.
-      </p>
-
-      <div class="contact-row">
-        <i data-lucide="map-pin"></i>
-        <span>
-          Ground Floor, Municipal City Hall of Justice Building,
-          Right Wing, National Road, Tunasan, Muntinlupa,
-          1773 Metro Manila
-        </span>
-      </div>
-
-      <div class="contact-row">
-        <i data-lucide="phone"></i>
-        <a href="tel:+63288622525">(02) 8862 2525</a>
-      </div>
-
-    </aside>
-  </section>
-
-  <section class="section-wrap services" id="services">
-
-    <div class="section-heading">
-      <div>
-        <span class="eyebrow">A guided starting point</span>
-        <h2>Know what to do next.</h2>
-      </div>
-
-      <p>
-        Explore the tools at your pace. You can begin with basic
-        information, then sign in to keep your progress.
-      </p>
-    </div>
-
-    <div class="feature-grid">
-
-      <article class="feature-card">
-        <span class="feature-icon green">
-          <i data-lucide="messages-square"></i>
-        </span>
-
-        <h3>Ask the chatbot</h3>
-
-        <p>
-          Describe a cyber-related concern and get clear, guided
-          information to help you prepare.
-        </p>
-
-        <a href="guest-chatbot.html">
-          Start a conversation
-          <i data-lucide="arrow-up-right"></i>
-        </a>
-      </article>
-
-      <article class="feature-card">
-        <span class="feature-icon blue">
-          <i data-lucide="list-checks"></i>
-        </span>
-
-        <h3>Organize your details</h3>
-
-        <p>
-          Use guided questions and checklists to organize what
-          happened and what you may need.
-        </p>
-
-        <a href="guest-decision.html">
-          Open the decision guide
-          <i data-lucide="arrow-up-right"></i>
-        </a>
-      </article>
-
-      <article class="feature-card">
-        <span class="feature-icon gold">
-          <i data-lucide="book-open-text"></i>
-        </span>
-
-        <h3>Read the law</h3>
-
-        <p>
-          Review an accessible overview of Republic Act No. 10175,
-          the Cybercrime Prevention Act.
-        </p>
-
-        <a href="guest-law.html">
-          Explore RA 10175
-          <i data-lucide="arrow-up-right"></i>
-        </a>
-      </article>
-
-    </div>
-  </section>
-
-  <section class="law-strip section-wrap" id="laws">
-
-    <span class="law-icon">
-      <i data-lucide="scale"></i>
-    </span>
-
-    <div>
-      <span class="eyebrow">Know the law</span>
-
-      <h2>Republic Act No. 10175</h2>
-
-      <p>
-        The Cybercrime Prevention Act of 2012 defines cybercrime
-        offenses and related procedures. This site offers a
-        plain-language starting point.
-      </p>
-    </div>
-
-    <a class="button button-light" href="guest-law.html">
-      View law guide
-      <i data-lucide="arrow-right"></i>
-    </a>
-
-  </section>
-
-  <section class="disclaimer section-wrap">
-    <i data-lucide="info"></i>
-
-    <p>
-      <b>Important:</b>
-      CyberLawAssist provides general legal information and guided
-      support. It is not a substitute for legal advice from a qualified
-      attorney. For urgent concerns, contact the office directly.
-    </p>
-  </section>
-
-</main>
-
-<footer class="site-footer">
-  <div class="section-wrap footer-inner">
-
-    <span>
-      © 2026 CyberLawAssist · Muntinlupa City District Office –
-      Public Attorney’s Office
-    </span>
-
-    <div class="footer-links">
-      <a href="#office">Office contact</a>
-      <a href="admin-login.html">Admin log in</a>
-      <a href="terms.html">Terms</a>
-      <a href="privacy.html">Privacy</a>
-    </div>
-
+<section class="hero section-wrap" id="home">
+  <div class="hero-copy"><span class="eyebrow"><i data-lucide="map-pin"></i> Public legal information for Muntinlupa</span>
+    <h1>Clearer next steps for <em>cyber law concerns.</em></h1>
+    <p class="lead">Get guided information about cybercrime concerns, understand relevant laws, and prepare questions before speaking with the Public Attorney’s Office.</p>
+    <div class="hero-actions"><a class="button button-blue" href="pages/guest-chatbot.html">Try the guest workspace <i data-lucide="arrow-right"></i></a><a class="button button-light" href="pages/login.html">Log in</a></div>
+    <div class="trust-line"><i data-lucide="shield-check"></i><span>Private, guided access to public legal information</span></div>
   </div>
-</footer>
+  <aside class="office-card" id="office"><div class="office-card-top"><span class="office-icon"><i data-lucide="building-2"></i></span><span class="status-pill"><span></span> Muntinlupa City</span></div>
+    <p class="card-kicker">YOUR LOCAL PUBLIC ATTORNEY’S OFFICE</p><h2>Here to help you understand your options.</h2><p>Connect with the Muntinlupa City District Office for legal assistance and guidance.</p>
+    <div class="contact-row"><i data-lucide="map-pin"></i><span>Ground Floor, Municipal City Hall of Justice Building, Right Wing, National Road, Tunasan, Muntinlupa, 1773 Metro Manila</span></div>
+    <div class="contact-row"><i data-lucide="phone"></i><a href="tel:+63288622525">(02) 8862 2525</a></div>
+  </aside>
+</section>
+<section class="section-wrap services" id="services"><div class="section-heading"><div><span class="eyebrow">A guided starting point</span><h2>Know what to do next.</h2></div><p>Explore the tools at your pace. You can begin with basic information, then sign in to keep your progress.</p></div>
+  <div class="feature-grid">
+    <article class="feature-card"><span class="feature-icon green"><i data-lucide="messages-square"></i></span><h3>Ask the chatbot</h3><p>Describe a cyber-related concern and get clear, guided information to help you prepare.</p><a href="pages/guest-chatbot.html">Start a conversation <i data-lucide="arrow-up-right"></i></a></article>
+    <article class="feature-card"><span class="feature-icon blue"><i data-lucide="list-checks"></i></span><h3>Organize your details</h3><p>Use guided questions and checklists to organize what happened and what you may need.</p><a href="pages/guest-decision.html">Open the decision guide <i data-lucide="arrow-up-right"></i></a></article>
+    <article class="feature-card"><span class="feature-icon gold"><i data-lucide="book-open-text"></i></span><h3>Read the law</h3><p>Review an accessible overview of Republic Act No. 10175, the Cybercrime Prevention Act.</p><a href="pages/guest-law.html">Explore RA 10175 <i data-lucide="arrow-up-right"></i></a></article>
+  </div>
+</section>
+<section class="law-strip section-wrap" id="laws"><span class="law-icon"><i data-lucide="scale"></i></span><div><span class="eyebrow">Know the law</span><h2>Republic Act No. 10175</h2><p>The Cybercrime Prevention Act of 2012 defines cybercrime offenses and related procedures. This site offers a plain-language starting point.</p></div><a class="button button-light" href="pages/guest-law.html">View law guide <i data-lucide="arrow-right"></i></a></section>
+<section class="disclaimer section-wrap"><i data-lucide="info"></i><p><b>Important:</b> CyberLawAssist provides general legal information and guided support. It is not a substitute for legal advice from a qualified attorney. For urgent concerns, contact the office directly.</p></section>
+</main>
+<footer class="site-footer"><div class="section-wrap footer-inner"><span>© 2026 CyberLawAssist · Muntinlupa City District Office – Public Attorney’s Office</span><div class="footer-links"><a href="#office">Office contact</a><a href="pages/admin-login.html">Admin log in</a><a href="pages/terms.html">Terms</a><a href="pages/privacy.html">Privacy</a></div></div></footer>
+<script async src="https://unpkg.com/lucide@latest" onload="window.lucide?.createIcons()"></script><script src="extra/cache.js"></script><script src="assets/js/api.js"></script><script src="assets/js/site.js"></script>
+</body></html>
 
-<script
-  async
-  src="https://unpkg.com/lucide@latest"
-  onload="window.lucide?.createIcons()">
-</script>
 
-<script src="cache.js"></script>
-<script src="api.js"></script>
-<script src="site.js"></script>
 
-</body>
-</html>
+
+fix the code, im lazy to do it. Im opening this on the github, remove the locactions and only leave the file name
