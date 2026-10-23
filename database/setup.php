@@ -51,5 +51,23 @@ if(is_file($legacy)) {
     $pdo->commit();copy($legacy,$private.'/legacy-users-backup.json');
 }
 assign_admin_numbers($pdo);
+$adminCount=(int)$pdo->query("SELECT COUNT(*) FROM users WHERE role='admin'")->fetchColumn();
+if($adminCount===0) {
+    $id=bin2hex(random_bytes(16));$password=bin2hex(random_bytes(24));$email='admin@cyberlawassist.test';
+    $exists=$pdo->prepare('SELECT 1 FROM users WHERE email=?');$exists->execute([$email]);
+    if($exists->fetchColumn()) $email='admin-'.bin2hex(random_bytes(4)).'@cyberlawassist.test';
+    $pdo->beginTransaction();
+    $insert=$pdo->prepare("INSERT INTO users (id,name,email,password_hash,role) VALUES (?,?,?,?,'admin')");
+    $insert->execute([$id,'CyberLawAssist Administrator',$email,password_hash($password,PASSWORD_DEFAULT)]);
+    $check=$pdo->prepare('INSERT INTO checklist_items (user_id,label,sort_order) VALUES (?,?,?)');
+    foreach(['Save relevant messages or posts','Record dates, times, and account names','Secure affected accounts','Write questions for the office'] as $i=>$label) $check->execute([$id,$label,$i]);
+    assign_admin_numbers($pdo);
+    $adminNumber=$pdo->query('SELECT admin_number FROM users WHERE id='.$pdo->quote($id))->fetchColumn();
+    $credentials="CyberLawAssist first administrator\nAdmin number: {$adminNumber}\nEmail: {$email}\nInitial password: {$password}\nChange this password after signing in.\n";
+    if(file_put_contents($private.'/first-admin.txt',$credentials,LOCK_EX)===false) { $pdo->rollBack();throw new RuntimeException('Cannot save first administrator credentials outside the public project folder.'); }
+    @chmod($private.'/first-admin.txt',0600);
+    $pdo->commit();
+    echo "Created the first administrator. Credentials saved outside htdocs: {$private}/first-admin.txt\n";
+}
 echo "Imported {$imported} existing accounts; source files retained.\n";
 echo "Database ready. Open http://localhost/CyberLawAssist/pages/signup.html to register a User account. Existing administrators create further admins through Users > Create administrator.\n";

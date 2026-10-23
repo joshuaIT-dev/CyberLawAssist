@@ -6,9 +6,11 @@ Double-click **start-project.bat**. It starts the installed XAMPP Apache/MySQL a
 
 The database and restricted application credentials have been installed on this computer. Configuration lives in `xampp/cyberlawassist-private/config.php`, outside `htdocs`. The website's PHP account does not have schema administration permissions.
 
+On a fresh setup with no administrator accounts, the installer creates the first administrator with a random password. Read its admin number, email, and initial password from `xampp/cyberlawassist-private/first-admin.txt`, then change the password after signing in. This file is outside the project and must not be committed or shared publicly.
+
 ### Register and log in
 
-Open **http://localhost/CyberLawAssist/pages/signup.html** to create a User account. Public registration always creates Users. To create an administrator, sign in with an existing admin account, open **Users -> Create administrator**, and enter the new administrator's details. Existing administrator accounts are retained; there are no default accounts or passwords. Creating another admin keeps the current administrator signed in. Each administrator needs a unique admin number. Open **Admin log in** from the login page or homepage footer and sign in with that number and password. Existing administrators receive numbers during migration; find yours in your profile or the Administrators list. Email login remains available for existing accounts.
+Open **http://localhost/CyberLawAssist/pages/signup.html** to create a User account. Public registration always creates Users. To create another administrator, sign in with an existing admin account, open **Users -> Create administrator**, and enter the new administrator's details. Existing administrator accounts are retained. Creating another admin keeps the current administrator signed in. Each administrator needs a unique admin number. Open **Admin log in** from the login page or homepage footer and sign in with that number and password. Existing administrators receive numbers during migration; find yours in your profile or the Administrators list. Email login remains available for existing accounts.
 
 Login opens only the workspace assigned to the database account role. Direct links to another workspace, including Guest pages, redirect to your assigned workspace. Logged-out visitors must log in to open User or Admin pages. Log out before signing into or registering another account. These rules apply to desktop and mobile. Administrators manage registered accounts in **Users -> Manage account**, including disabling access and resetting a user's password after verifying their identity. Users can change their own password under Settings. Under **Users -> Manage account**, admins can change a user password or permanently delete a user account after entering their administrator password and typing DELETE. Deletion removes that user's saved chats, checklist, support conversation, notifications, and read markers. Accounts linked as creators of office records must be disabled instead.
 
@@ -25,7 +27,7 @@ Login opens only the workspace assigned to the database account role. Direct lin
 - Reports calculated from SQL: Monday-Sunday weeks, actual calendar months, twelve-month years, and formatted Word (.docx) export.
 - Published multilingual law content and office contact details read from SQL.
 
-The current database contains content copied from the existing project datasets and the project-supplied office details. It does not seed fake visitors, user conversations, or default accounts. The offline AI still reads the 3,069 Q&A pairs in `phyton ai/data`; see [AI instructions](<phyton ai/README.md>).
+The installer seeds law and office content, and creates one initial administrator only when no admin account exists. It does not create fake visitors or user conversations. The offline AI still reads the 3,069 Q&A pairs in `phyton ai/data`; see [AI instructions](<phyton ai/README.md>).
 
 ## Install on another XAMPP computer
 
@@ -33,7 +35,7 @@ The current database contains content copied from the existing project datasets 
 2. Start XAMPP MySQL. From this folder run `C:\path\to\xampp\php\php.exe database\setup.php`.
 3. If local database administration uses a password, set `CLA_DB_SETUP_USER` / `CLA_DB_SETUP_PASSWORD` in that command's environment. The installer creates a separate app account and stores only that app's credentials outside the public directory.
 4. Run `phyton ai/setup-ai.ps1` if no local Python environment exists, then start the project.
-5. Public Create account registers Users only. Restore an existing office administrator account from your database backup to create further administrators through **Users -> Create administrator**.
+5. Public Create account registers Users only. A fresh database receives a first administrator during setup; read its generated credentials from `cyberlawassist-private/first-admin.txt`. Import a database backup only when transferring existing accounts and records.
 
 `database/schema.sql` is for a fresh database. `database/migrate.php` applies the additive changes needed by this implementation to an existing installation. Run it from PHP CLI after taking a database backup. Setup and migration scripts reject HTTP access.
 

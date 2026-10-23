@@ -1,6 +1,7 @@
 -- CyberLawAssist database plan: MariaDB 10.4.32 (installed XAMPP version).
 -- Installation schema. database/setup.php creates it; database/migrate.php handles existing installations.
--- No sample accounts, passwords, personal records, or legal content are seeded.
+-- The setup installer provisions one first administrator with a random password when none exists.
+-- It stores that password outside htdocs; this schema contains no hard-coded credentials or sample user records.
 CREATE DATABASE IF NOT EXISTS cyberlawassist
   CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE cyberlawassist;
