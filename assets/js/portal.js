@@ -23,8 +23,10 @@ let serverUser=boot.user||null, serverThreads=boot.threads||[], serverChecks=boo
 let serverAdministrators=boot.administrators||[];
 const appearanceKey='cla-appearance';
 let appearance=(()=>{try{return {...{dark:false,motion:true,textSize:1},...JSON.parse(localStorage.getItem(appearanceKey)||'{}')}}catch{return {dark:false,motion:true,textSize:1}}})();
-function applyAppearance(){document.body.classList.toggle('cla-dark',!!appearance.dark);document.body.classList.toggle('cla-motion',!!appearance.motion);document.documentElement.style.setProperty('--cla-text-scale',String(Math.min(1.2,Math.max(.9,Number(appearance.textSize)||1))))}
+function applyAppearance(){const scale=Math.min(1.2,Math.max(.9,Number(appearance.textSize)||1));document.body.classList.toggle('cla-dark',!!appearance.dark);document.body.classList.toggle('cla-motion',!!appearance.motion);document.documentElement.style.setProperty('--cla-text-scale',String(scale));const content=document.getElementById('content');if(content){const gutter=innerWidth<=680?28:innerWidth<=900?38:56;content.style.width=Math.max(0,Math.min(1120,content.parentElement.clientWidth-gutter)/scale)+'px'}}
+window.addEventListener('resize',applyAppearance,{passive:true});
 applyAppearance();
+setTimeout(applyAppearance,0);
 const contentData={laws:boot.laws||[],contacts:boot.contacts||[]};
 let refreshVersion=0, reportVersion=0, searchVersion=0;
 function errorNotice(error){
