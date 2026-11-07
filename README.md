@@ -1,5 +1,49 @@
 # CyberLawAssist
 
+CyberLawAssist is a local-first cybercrime information and office-support portal. The browser UI is served by XAMPP Apache, PHP enforces sessions and role permissions and reads/writes MySQL, and PHP forwards chatbot questions to a Python service bound to this computer. The chatbot searches a prepared multilingual Q&A corpus; it is not a generative AI service and does not call a cloud AI API.
+
+## Current system flow
+
+```text
+Visitor browser
+  +-- Public pages, registration, login
+  +-- Guest workspace -- chatbot question --------------------+
+  |      guest chat history stays in browser                  |
+  |                                                           v
+  +-- Signed-in User workspace ------------------------> Apache + PHP API
+  +-- Signed-in Admin workspace ----------------------->  |  session, CSRF,
+       role-based workspace                               |  role/ownership checks
+                                                          +------> MySQL
+                                                          |        accounts and
+                                                          |        workspace data
+                                                          |
+                                                          +------> Python AI :8001
+                                                                    local multilingual
+                                                                    Q&A search
+  Browser <------------- answer, sources, suggestions <-------------+
+```
+
+Public registration creates a User account. Admin accounts are created by an authenticated administrator. A signed-in account is routed to its assigned workspace; guests may use the public/guest workspace but cannot open registered-user or administrator pages. PHP is the browser-facing application API. The Python service listens on `127.0.0.1:8001`; same-network phones access Apache only, not the Python port.
+
+### Interfaces and components
+
+- **Browser UI:** HTML pages, shared JavaScript/CSS, responsive workspace navigation, and local browser storage for guest chat history and appearance settings.
+- **Web/API:** XAMPP Apache and PHP. The PHP session/API layer handles authentication, authorization, validation, and data access.
+- **Database:** MySQL stores accounts and signed-in application records. The current schema is defined in `database/schema.sql`; installation and additive migrations are in `database/setup.php` and `database/migrate.php`.
+- **Chat service:** Python NLP service in `phyton ai/`, with a prepared English, Tagalog, and Taglish Q&A corpus in `phyton ai/data/`. PHP proxies chatbot requests so browsers and phones do not need direct access to port 8001.
+- **External dependency:** Lucide icons are loaded from a CDN when internet access is available. Chat answering and core data storage are local. No external email/SMS or cloud AI service is configured.
+- **Host requirements:** Windows/XAMPP host with Apache, MySQL, PHP (including PharData for document exports), and Python 3.10+ or uv for the AI service. Phones/tablets on the same LAN need a browser and network access to Apache.
+
+### Data flow and storage
+
+1. The browser requests a public page or workspace from Apache.
+2. PHP checks the session and workspace role. It returns authorized bootstrap data and rejects or redirects requests that do not match the signed-in role.
+3. For chatbot questions, PHP sends the text and language/context to the local Python endpoint. Python searches the packaged Q&A data and returns an answer, source references, suggestions, and match metadata.
+4. The browser displays the reply. Guest conversation history remains in that browser; authenticated User/Admin conversations are saved through the PHP API in MySQL. The Python service does not keep the conversation database.
+5. Other workspace actions, such as checklists, support, notices, intake, cases, and reports, go through PHP and MySQL with account/role checks.
+
+See `database/schema.sql` for the exact table definitions and `database/DATABASE_PLAN.md` for database notes. Do not treat this README's feature groups as a substitute for the schema when changing database code.
+
 ## Start the local project
 
 Double-click **start-project.bat**. It starts the installed XAMPP Apache/MySQL and the local Python AI if they are stopped. Open **http://localhost/CyberLawAssist/**.

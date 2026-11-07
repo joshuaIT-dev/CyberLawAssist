@@ -52,8 +52,8 @@ function cases_data(string $search='',int $offset=0): array {
     $where='';$args=[];
     if($search!=='') { $where=" WHERE reference LIKE ? OR visitor_name LIKE ? OR contact_number LIKE ? OR visit_date LIKE ? OR assigned_staff LIKE ? OR REPLACE(concern_type,'_',' ') LIKE ? OR REPLACE(status,'_',' ') LIKE ?";$args=array_fill(0,7,'%'.addcslashes($search,'\\%_').'%'); }
     $count=(int)query('SELECT COUNT(*) FROM case_records'.$where,$args)->fetchColumn();
-    $rows=query('SELECT * FROM case_records'.$where.' ORDER BY id DESC LIMIT 50 OFFSET '.max(0,$offset),$args)->fetchAll();
-    return ['records'=>array_map('case_row',$rows),'total'=>$count,'offset'=>$offset,'hasMore'=>$offset+count($rows)<$count];
+    $rows=query('SELECT * FROM case_records'.$where.' ORDER BY visit_date DESC,id DESC LIMIT 10 OFFSET '.max(0,$offset),$args)->fetchAll();
+    return ['records'=>array_map('case_row',$rows),'total'=>$count,'offset'=>$offset,'pageSize'=>10,'hasMore'=>$offset+count($rows)<$count];
 }
 function dashboard(): array {
     $today=(new DateTimeImmutable('now',new DateTimeZone('Asia/Manila')))->format('Y-m-d');

@@ -130,11 +130,32 @@ if($action==='notice_read') {
 if($action==='checklist_export') {
     docx_response('cyberlawassist-checklist.docx','Preparation Checklist',checklist_document($u,checklist($uid)),$u['name']);
 }
-if(in_array($action,['cases','case_get','case_save','report','report_export','users','user_status','user_password','admin_create','user_delete'],true)) admin();
+if(in_array($action,['cases','case_get','case_save','report','report_export','users','user_status','user_password','admin_create','admin_status','admin_password','user_delete'],true)) admin();
 if($action==='users') respond(200,['ok'=>true,'users'=>user_directory(),'administrators'=>user_directory('admin')]);
 if($action==='admin_create') {
     post();create_account($d,'admin');
     respond(201,['ok'=>true,'administrators'=>user_directory('admin')]);
+}
+if($action==='admin_status') {
+    post();$id=text($d,'id',32,true);$status=choice($d,'status',['active','disabled']);
+    if($id===$uid) fail(403,'Use your own account settings to manage your account.');
+    db()->beginTransaction();
+    $activeAdmins=query("SELECT id FROM users WHERE role='admin' AND status='active' ORDER BY id FOR UPDATE")->fetchAll();
+    $target=query("SELECT id,status FROM users WHERE id=? AND role='admin' FOR UPDATE",[$id])->fetch();
+    if(!$target) { db()->rollBack();fail(404,'Administrator account not found.'); }
+    if($status==='disabled'&&$target['status']!=='disabled'&&count($activeAdmins)<=1) { db()->rollBack();fail(409,'At least one active administrator account must remain.'); }
+    query("UPDATE users SET status=?,session_version=session_version+1 WHERE id=? AND role='admin'",[$status,$id]);
+    db()->commit();
+    respond(200,['ok'=>true,'administrators'=>user_directory('admin')]);
+}
+if($action==='admin_password') {
+    post();$id=text($d,'id',32,true);$new=$d['password']??'';
+    if($id===$uid) fail(403,'Use Settings to change your own password.');
+    if(!password_verify(secret($d,'current_password'),$u['password_hash'])) fail(403,'Your administrator password is incorrect.');
+    if(!is_string($new)||mb_strlen($new)<8||trim($new)===''||strlen($new)>72||str_contains($new,"\0")||$new!==($d['confirm-password']??null)) fail(422,'Choose a matching new password with at least 8 characters.');
+    if(!query("SELECT id FROM users WHERE id=? AND role='admin'",[$id])->fetch()) fail(404,'Administrator account not found.');
+    query('UPDATE users SET password_hash=?,session_version=session_version+1,login_failures=0,login_locked_until=NULL WHERE id=?',[password_hash($new,PASSWORD_DEFAULT),$id]);
+    respond(200,['ok'=>true,'administrators'=>user_directory('admin')]);
 }
 if($action==='user_status') {
     post();$id=text($d,'id',32,true);$status=choice($d,'status',['active','disabled']);

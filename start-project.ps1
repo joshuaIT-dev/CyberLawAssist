@@ -29,6 +29,9 @@ if (-not (Test-Path -LiteralPath (Join-Path $claPrivate 'config.php'))) {
 if (-not (Test-LocalPort 80)) {
     $apache = Join-Path $claXampp 'apache\bin\httpd.exe'
     $config = Join-Path $claXampp 'apache\conf\httpd.conf'
+    # Apache loads PHP extensions such as php_curl.dll. Include PHP's DLL
+    # directories so Windows can resolve those extensions' dependencies.
+    $env:PATH = (Join-Path $claXampp 'php') + ';' + (Join-Path $claXampp 'php\ext') + ';' + (Join-Path $claXampp 'apache\bin') + ';' + $env:PATH
     Start-Process -FilePath $apache -ArgumentList @('-f',('"'+$config+'"')) -WorkingDirectory (Split-Path $apache) -WindowStyle Hidden
     Wait-LocalPort 80
 }
